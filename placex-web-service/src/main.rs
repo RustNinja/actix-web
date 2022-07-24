@@ -9,6 +9,7 @@ use placex_web_service::route::{*,State::{AppState}};
 async fn main() -> std::io::Result<()>{
     HttpServer::new(|| {
         App::new()
+        .configure(config)
         .app_data(web::Data::new(AppState{
             app_name : String::from("PlaceX Service"),
             counter : Mutex::new(0),

@@ -32,3 +32,11 @@ pub async fn increment_state(data : web::Data<AppState>) -> impl Responder {
     
     HttpResponse::Ok().body(format!("{counter}"))
 }
+
+pub fn config(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::resource("/app")
+            .route(web::get().to(|| async { HttpResponse::Ok().body("app") }))
+            .route(web::head().to(HttpResponse::MethodNotAllowed)),
+    );
+}
