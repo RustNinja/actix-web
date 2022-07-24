@@ -18,6 +18,7 @@ async fn main() -> std::io::Result<()>{
         .service(echo)
         .route("/hey", web::get().to(manual_hello))
         .service(increment_state)
+        .service(stream)
         .service(web::scope("/app").route("/x", web::get().to(manual_hello) ))
         
     })

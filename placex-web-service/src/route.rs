@@ -1,9 +1,10 @@
 pub mod State;
+use actix_web::Either;
 #[allow(unused_imports)]
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Error};
 #[allow(unused_imports)]
 use placex_model::*;
-use crate::route::State::AppState;
+use crate::{route::State::AppState, dto::MyDto};
 
 #[get("/")]
 pub async fn hello() -> impl Responder{
@@ -31,6 +32,32 @@ pub async fn increment_state(data : web::Data<AppState>) -> impl Responder {
     *counter +=1;
     
     HttpResponse::Ok().body(format!("{counter}"))
+}
+
+async fn ret_my_dto() -> impl Responder {
+    MyDto { name: "user" }
+}
+
+use futures::{future::ok, stream::once};
+
+#[get("/stream")]
+async fn stream() -> HttpResponse {
+    let body = once(ok::<_, Error>(web::Bytes::from_static(b"test")));
+
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .streaming(body)
+}
+
+type RegisterResult = Either<HttpResponse, Result<&'static str, Error>>;
+async fn Either_index() -> RegisterResult {
+    if true {
+        // choose Left variant
+        Either::Left(HttpResponse::BadRequest().body("Bad data"))
+    } else {
+        // choose Right variant
+        Either::Right(Ok("Hello"))
+    }
 }
 
 pub fn config(cfg: &mut web::ServiceConfig) {
