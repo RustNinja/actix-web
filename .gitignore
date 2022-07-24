@@ -1,8 +1,6 @@
 
 *.bin
 
-placex-web-service/target/debug/deps/
+placex-web-service/target
 
-placex-web-service/target/debug/.fingerprint/placex-web-service-cc9fa688af1e889c/
-
-placex-web-service/target/debug/.fingerprint/adler-812a11ee0b90820d/
+.DS_Store
