@@ -21,6 +21,8 @@ async fn main() -> std::io::Result<()>{
         .service(web::scope("/app").route("/x", web::get().to(manual_hello) ))
         
     })
+    .keep_alive(std::time::Duration::from_secs(75))
+    .workers(4)
     .bind(("127.0.0.1",8080))?
     .run()
     .await
